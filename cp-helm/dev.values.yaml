@@ -2,9 +2,9 @@ addtask :
   Deploymentname : add-task
   appname : add-task
   containername : add-task
-  acrname : cptacr.azurecr.io
-  imagename : addtask-1
-  imagetag : latest
+  acrname : cptaksregistry.azurecr.io
+  imagename : addtask
+  imagetag : v1
   containerport : 8000
   ingressname : add-task-ingress
   servicename : add-task
@@ -15,9 +15,9 @@ gettask :
   Deploymentname : get-task
   appname : get-task
   containername : get-task
-  acrname : cptacr.azurecr.io
-  imagename : gettask-1
-  imagetag : latest
+  acrname : cptaksregistry.azurecr.io
+  imagename : gettask
+  imagetag : v1
   containerport : 8000
   ingressname : get-task-ingress
   servicename : get-task
@@ -28,9 +28,9 @@ deletetask :
   Deploymentname : delete-task
   appname : delete-task
   containername : delete-task
-  acrname : cptacr.azurecr.io
-  imagename : deletetask-1
-  imagetag : latest
+  acrname : cptaksregistry.azurecr.io
+  imagename : deletetask
+  imagetag : v1
   containerport : 8000
   ingressname : delete-task-ingress
   servicename : delete-task
@@ -41,9 +41,9 @@ frontendtask :
   Deploymentname : frontend-task
   appname : frontend-task
   containername : frontend-task
-  acrname : cptacr.azurecr.io
-  imagename : frontend-1
-  imagetag : latest
+  acrname : cptaksregistry.azurecr.io
+  imagename : frontend
+  imagetag : v1
   containerport : 8000
   ingressname : frontend-task-ingress
   servicename : frontend-task
