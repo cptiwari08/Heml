@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: add-tasks-ingress
+spec:
+  ingressclassname : nginx
+  rules:
+  - host: addtask.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: add-tasks
+            port: 
+              number: 80

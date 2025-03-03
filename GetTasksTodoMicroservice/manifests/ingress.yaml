@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: get-tasks-ingress
+spec:
+  ingressclassname : nginx
+  rules:
+  - host: get-tasks.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: get-tasks
+            port: 
+              number: 80

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{.Values.gettask.ingressname}}
+spec:
+  ingressClassName : nginx
+  rules:
+  - host: gettask.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{.Values.gettask.servicename}}
+            port: 
+              number: {{.Values.gettask.serviceport}}

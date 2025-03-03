@@ -1,0 +1,217 @@
+---
+# Source: cp-helm/templates/add-task/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: add-task
+spec:
+  type: ClusterIP
+  selector:
+    app: add-task
+  ports:
+  - port: 80
+    targetPort: 8000
+---
+# Source: cp-helm/templates/delete-task/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: delete-task
+spec:
+  type: ClusterIP
+  selector:
+    app: delete-task
+  ports:
+  - port: 80
+    targetPort: 8000
+---
+# Source: cp-helm/templates/frontend/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-task
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend-task
+  ports:
+    - port: 80
+      targetPort:
+---
+# Source: cp-helm/templates/get-task/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: get-task
+spec:
+  type: ClusterIP
+  selector:
+    app: get-task
+  ports:
+    - port: 80
+      targetPort: 8000
+---
+# Source: cp-helm/templates/add-task/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: add-task
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: add-task
+  template:
+    metadata:
+      labels:
+        app: add-task
+    spec:
+      containers:
+      - name: add-task
+        env:
+          - name: CONNECTION_STRING
+            value: "Driver={ODBC Driver 17 for SQL Server};Server=tcp:devopsinsiderssrv.database.windows.net,1433;Database=cpt;Uid=useradmin ;Pwd=Maveric@12345;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"  
+        image: cptacr/cptacr.azurecr.io/addtaskimg:v1
+        ports:
+        - containerPort: 8000
+---
+# Source: cp-helm/templates/delete-task/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: delete-task
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: delete-task
+  template:
+    metadata:
+      labels:
+        app: delete-task
+    spec:
+      containers:
+      - name: 
+        env:
+          - name: CONNECTION_STRING
+            value: "Driver={ODBC Driver 17 for SQL Server};Server=tcp:devopsinsiderssrv.database.windows.net,1433;Database=cpt;Uid=useradmin ;Pwd=Maveric@12345;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"  
+        image: cptacr/cptacr.azurecr.io/deletetaskimg:v1
+        ports:
+        - containerPort: 8000
+---
+# Source: cp-helm/templates/frontend/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-task
+spec:
+  # replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-task
+  template:
+    metadata:
+      labels:
+        app: frontend-task
+    spec:
+      containers:
+      - name: frontend-task
+        image: cptacr/:v1
+        ports:
+        - containerPort: 8000
+---
+# Source: cp-helm/templates/get-task/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: get-task
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: get-task
+  template:
+    metadata:
+      labels:
+        app: get-task
+    spec:
+      containers:
+      - name: get-task
+        env:
+          - name: CONNECTION_STRING
+            value: "Driver={ODBC Driver 17 for SQL Server};Server=tcp:devopsinsiderssrv.database.windows.net,1433;Database=cpt;Uid=useradmin ;Pwd=Maveric@12345;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"                                          
+        image: cptacr/:v1
+        ports:
+        - containerPort:
+---
+# Source: cp-helm/templates/add-task/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: add-task-ingress
+spec:
+  rules:
+  - host: add-task.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: add-task
+            port: 
+              number: 80
+---
+# Source: cp-helm/templates/delete-task/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: delete-task-ingress
+spec:
+  rules:
+  - host: delete-task.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: delete-task
+            port: 
+              number: 80
+---
+# Source: cp-helm/templates/frontend/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-task-ingress
+spec:
+  rules:
+  - host: frontend-tasks.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: frontend-task
+            port: 
+              number: 80
+---
+# Source: cp-helm/templates/get-task/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: get-task-ingress
+spec:
+  rules:
+  - host: get-tasks.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: get-task
+            port: 
+              number: 80

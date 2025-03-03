@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.gettask.Deploymentname}}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{.Values.gettask.appname}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.gettask.appname}}
+    spec:
+      containers:
+      - name: {{.Values.gettask.containername}}
+        env:
+          - name: CONNECTION_STRING
+            value: "Driver={ODBC Driver 17 for SQL Server};Server=tcp:cptserver.database.windows.net,1433;Database=cdptdb;Uid=cptiwari;Pwd=Qwerty@12345;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+        image: {{.Values.gettask.acrname}}/{{.Values.gettask.imagename}}:{{.Values.gettask.imagetag}}
+        ports:
+        - containerPort: {{.Values.gettask.containerport}}

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-tasks
+spec:
+  # replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-tasks
+  template:
+    metadata:
+      labels:
+        app: frontend-tasks
+    spec:
+      containers:
+      - name: frontend-tasks
+        image: devopsinsiders/frontend-tasks
+        ports:
+        - containerPort: 8000

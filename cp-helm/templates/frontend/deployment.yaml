@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.frontendtask.Deploymentname}}
+spec:
+  # replicas: 3
+  selector:
+    matchLabels:
+      app: {{.Values.frontendtask.appname}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.frontendtask.appname}}
+    spec:
+      containers:
+      - name: {{.Values.frontendtask.containername}}
+        image: {{.Values.frontendtask.acrname}}/{{.Values.frontendtask.imagename}}:{{.Values.frontendtask.imagetag}}
+        ports:
+        - containerPort: {{.Values.frontendtask.containerport}}

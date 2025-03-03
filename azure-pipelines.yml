@@ -1,0 +1,74 @@
+trigger: none
+
+pool: Agentpool
+
+stages:
+  - stage: BuildAndPush
+    jobs:
+      - job: BuildAndPushFrontend
+        steps:
+
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'Tiwari-ACR'
+            repository: 'frontend-1'
+            command: 'buildAndPush'
+            Dockerfile: '**/MicroTodoUI/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
+
+      - job: BuildAndPushAddtask
+        dependsOn: BuildAndPushFrontend
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'Tiwari-ACR'
+            repository: 'addtask-1'
+            command: 'buildAndPush'
+            Dockerfile: '**/AddTaskTodoMicroservice/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
+
+      - job: BuildAndPushGettask
+        dependsOn: BuildAndPushAddtask
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'Tiwari-ACR'
+            repository: 'gettask-1'
+            command: 'buildAndPush'
+            Dockerfile: '**/GetTasksTodoMicroservice/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
+
+      - job: BuildAndPushDeletetask
+        dependsOn: BuildAndPushGettask
+        steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'Tiwari-ACR'
+            repository: 'deletetask-1'
+            command: 'buildAndPush'
+            Dockerfile: '**/DeleteTaskTodoMicroservice/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
+  
+  - stage: Helm
+    jobs:
+      - job: HelmDeployment
+        steps:       
+        - task: HelmDeploy@1
+          inputs:
+            connectionType: 'Kubernetes Service Connection'
+            kubernetesServiceConnection: 'Kubectl_service connection'
+            command: 'upgrade'
+            chartType: 'Name'
+            chartName: 'cp-helm'
+            releaseName: 'cp-helm'
+            valueFile: 'cp-helm/dev.values.yaml'
+            waitForExecution: false
+        

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{.Values.deletetask.ingressname}}
+spec:
+  ingressClassName : nginx
+  rules:
+  - host: deletetask.cptiwari.cloud
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: {{.Values.deletetask.servicename}}
+            port: 
+              number: {{.Values.deletetask.serviceport}}
